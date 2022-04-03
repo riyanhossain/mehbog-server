@@ -2,7 +2,7 @@ const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
 var cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 app.use(cors());
 
@@ -58,7 +58,7 @@ client.connect((err) => {
     });
   });
   //getting Maching Learning data
-  app.get("/machinglearning", (req, res) => {
+  app.get("/machinelearning", (req, res) => {
     collection.find({ category: "Maching Learning" }).toArray((err, documents) => {
       res.send(documents);
     });
@@ -69,6 +69,17 @@ client.connect((err) => {
       res.send(documents);
     });
   });
+  //getting article id
+  app.get('/article/:id', (req, res) => {
+    collection.find({_id: ObjectId(req.params.id)}).toArray((err, documents) => {
+      res.send(documents);
+    });
+  })
+  //updatting comments
+  app.patch('/update/:id', (req, res) => {
+    collection.updateOne({_id: ObjectId(req.params.id)}, {$set: {comments: req.body[0].comments}})
+    res.send('updated')
+  }) 
 });
 
 app.get("/", (req, res) => {
