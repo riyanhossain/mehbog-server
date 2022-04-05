@@ -28,7 +28,7 @@ client.connect((err) => {
     const blog = req.body;
     console.log(blog);
     collection.insertOne(blog).then((result) => {
-      console.log(result);
+      // console.log(result);
     });
   });
 
@@ -79,7 +79,20 @@ client.connect((err) => {
   app.patch('/update/:id', (req, res) => {
     collection.updateOne({_id: ObjectId(req.params.id)}, {$set: {comments: req.body[0].comments}})
     res.send('updated')
-  }) 
+  })
+  
+  //myblogs
+  let userMail='';
+  app.post("/myblog", (req, res) => {
+     userMail=req.body.email
+  });
+
+
+  app.get("/myblogs", (req, res) => {
+    collection.find({ bloggerMail: userMail }).toArray((err, documents) => {
+      res.send(documents); 
+    });
+  });
 });
 
 app.get("/", (req, res) => {
