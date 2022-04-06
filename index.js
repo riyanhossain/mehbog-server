@@ -2,6 +2,8 @@ const express = require("express");
 const app = express();
 var bodyParser = require("body-parser");
 var cors = require("cors");
+require('dotenv').config();
+
 const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 app.use(cors());
@@ -98,4 +100,4 @@ client.connect((err) => {
 app.get("/", (req, res) => {
   res.send("mehblog server is running");
 });
-app.listen(5000);
+app.listen(process.env.PORT || 5000);
