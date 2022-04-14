@@ -95,6 +95,10 @@ client.connect((err) => {
       res.send(documents); 
     });
   });
+  //delete blog
+  app.delete('/delete/:id',(req, res) =>{
+    collection.deleteOne({_id: ObjectId(req.params.id)})
+  })
 });
 
 app.get("/", (req, res) => {
